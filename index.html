@@ -130,13 +130,15 @@
     $('[data-countdown]').each(function () {
       var $deadline = new Date($(this).data('countdown')).getTime();
 
-      var $dataDays = $('[data-days]');
-      var $dataHours = $('[data-hours]');
-      var $dataMinutes = $('[data-minutes]');
-      var $dataMinutes = $('[data-minutes]');
+      var $dataDays = $(this).children('[data-days]');
+      var $dataHours = $(this).children('[data-hours]');
+      var $dataMinutes = $(this).children('[data-minutes]');
+      var $dataSeconds = $(this).children('[data-seconds]');
+      // console.log($dataDays)
 
 
       var x = setInterval(function () {
+
         var now = new Date().getTime();
         var today = $deadline - now;
 
@@ -145,13 +147,41 @@
         var min = Math.floor(today % (1000 * 60 * 60) / (1000 * 60));
         var sec = Math.floor(today % (1000 * 60) / (1000));
 
-        console.log(days);
-        console.log(hrs);
-        console.log(min);
-        console.log(sec);
+        // if days/hrs/min/sec is less then 10 than put 0 front of number
+        if (days < 10) {
+          days = '0' + days;
+        }
+        if (hrs < 10) {
+          hrs = '0' + hrs;
+        }
+        if (min < 10) {
+          min = '0' + min;
+        }
+        if (sec < 10) {
+          sec = '0' + sec;
+        }
+
+
+        $dataDays.html(days);
+        $dataHours.html(hrs);
+        $dataMinutes.html(min);
+        $dataSeconds.html(sec);
+
+        // console.log(days);
+        // console.log(hrs);
+        // console.log(min);
+        // console.log(sec);
 
 
 
+        if (today <= 0) {
+          clearInterval(x);
+
+          $dataDays.html('00');
+          $dataHours.html('00');
+          $dataMinutes.html('00');
+          $dataSeconds.html('00');
+        }
 
       }, 1000);
     });
